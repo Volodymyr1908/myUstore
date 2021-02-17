@@ -1,0 +1,303 @@
+/*Підключаємо шрифти*/
+@font-face {
+    font-family: "PokemonNormal";
+    src: url("../assets/fonts/PokemonHollow.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "PokemonBold";
+    src: url("../assets/fonts/PokemonSolid.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+/*color: #FFDA73;*/
+/*color: #FFDA43;*/
+/*color: #1C768F;*/
+
+
+
+/*СТИЛІ ГОЛОВНИХ СЕКЦІЙ---------------------------------------->*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    background-color: #1C768F;
+    position: fixed;
+}
+header {
+    max-width: 80vw;
+    margin: 0 auto;
+}
+
+/*СТИЛІЗАЦІЯ ХЕДЕРУ СТОРІНКИ-------------------------------->*/
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 8vh;
+    font-family: PokemonBold;
+    background-color: #1C768F;
+}
+
+.logo {
+    text-transform: uppercase;
+    font-size: 2.1rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.logo img {
+    width: 5rem;
+    margin: .1rem 0;
+}
+.logo-link {
+    text-decoration: none;
+    color: #FFDA73;
+
+}
+/*navigation menu------------------------------------------------------>*/
+
+.nav-links {
+    display: flex;
+    justify-content: flex-end;
+    width: 50%;
+}
+.nav-links li {
+    list-style: none;
+    margin: 1rem 2rem;
+}
+
+.nav-links a {
+    color: #FFDA73;
+    text-decoration: none;
+    font-size: 1.6rem;
+    letter-spacing: .2rem;
+}
+
+.nav-links a:hover, .nav-links a:focus {
+    color: #FFDA43;
+}
+
+/*burger button-------------------------------------------->*/
+.burger {
+    display: none;
+}
+
+.burger:hover {
+    cursor: pointer;
+}
+
+.burger div {
+    width: 2.5rem;
+    height: .35rem;
+    background-color: #FFDA73;
+    margin: .4rem;
+    transition: all .3s ease;
+}
+
+.toggle .line1 {
+    transform: rotate(-45deg) translate(-11px,6px);
+}
+
+.toggle .line2 {
+    opacity: 0;
+}
+
+.toggle .line3 {
+    transform: rotate(45deg) translate(-11px,-6px);
+}
+
+@media screen and (max-width: 1330px) {
+    .nav-links {
+        width: 45%;
+        margin-left: 25rem;
+    }
+    .nav-links a {
+        letter-spacing: 0;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .nav-links {
+        width: 35%;
+    }
+    .nav-links a {
+        letter-spacing: 0;
+    }
+}
+@media screen and (max-width: 874px) {
+    body {
+        overflow-x: hidden;
+    }
+    .nav-links {
+        position: absolute;
+        right: 0;
+        height: 92vh;
+        top: 8.1vh;
+        background-color: #1C768F;
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        align-items: center;
+        width: 45%;
+        transform: translateX(100%);
+        transition: transform .3s ease-in;
+    }
+    .nav-links li {
+        position: relative;
+        top: 2rem;
+        opacity: 0;
+        margin: 3rem 2rem;
+    }
+    .burger {
+        position: relative;
+        right: -8.5rem;
+        display: block;
+    }
+    .nav-links .dropdown:hover {
+        height: 38%;
+    }
+    .dropdown-menu {
+        position: absolute;
+    }
+    .dropdown-menu ul li{
+        text-align: center;
+        margin-top: -1rem;
+    }
+    .dropdown-menu a {
+        font-size: 1.1rem;
+    }
+    .dropdown-menu ul li img {
+        display: block;
+        position: relative;
+        margin: 0 auto;
+    }
+}
+
+.nav-active {
+    transform: translateX(0%);
+}
+
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(5rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+
+/*DropDownMenu----------------------------------------------->*/
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown-menu a{
+    color: #1C768F;
+}
+.dropdown-menu li {
+    margin-top: 1.7rem;
+}
+.dropdown-menu .dropdown-item {
+    font-size: 1.2rem;
+}
+.dropdown-menu .dropdown-item:hover {
+    color: darkred;
+    transition: .3s linear;
+}
+
+.dropdown-item img {
+    margin-right: .3rem;
+}
+
+.nav-links .dropdown:hover .dropdown-menu {
+    display: block;
+    position: absolute;
+    background-color: #FFDA73;
+    border-radius: 1rem;
+}
+
+/*trash(корзина)------------------------------------------------>*/
+
+
+
+/*ГОЛОВНА СЕКЦІЯ СТОРІНКИ*/
+
+.poke-body {
+    background: #EFEFBB;
+    background: -webkit-linear-gradient(to right, #D4D3DD, #EFEFBB);
+    background: linear-gradient(to right, #D4D3DD, #EFEFBB);
+    font-family: PokemonBold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+.poke-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 7rem auto;
+    max-width: 1250px;
+}
+
+.pokemon {
+    background-color: #eee;
+    border-radius: 20px;
+    box-shadow: 0 3px 15px rgba(100, 100, 100, 0.5);
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.pokemon .img-container {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    text-align: center;
+}
+
+.pokemon .img-container img {
+    margin-top: 20px;
+    max-width: 90%;
+}
+
+.pokemon .info {
+    margin-top: 20px;
+}
+
+.pokemon .number {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-size: 0.8em;
+    padding: 5px 10px;
+}
+
+.pokemon .name {
+    margin: 15px 0 7px;
+    letter-spacing: 1px;
+}
+
+
+@media screen and (max-width: 480px) {
+
+    .social-panel-container.visible {
+        transform: translateX(0px);
+    }
+
+    .floating-btn {
+        right: 10px;
+    }
+}
