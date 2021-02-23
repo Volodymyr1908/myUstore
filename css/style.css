@@ -140,7 +140,7 @@ nav {
         position: absolute;
         right: 0;
         height: 92vh;
-        top: 8.1vh;
+        top: 8vh;
         background-color: #1C768F;
         display: flex;
         justify-content: start;
@@ -163,12 +163,13 @@ nav {
     }
     .nav-links .dropdown:hover {
         height: 38%;
+        width: 18rem;
+        margin-bottom: 7rem;
     }
     .dropdown-menu {
         position: absolute;
     }
     .dropdown-menu ul li{
-        text-align: center;
         margin-top: -1rem;
     }
     .dropdown-menu a {
@@ -177,7 +178,8 @@ nav {
     .dropdown-menu ul li img {
         display: block;
         position: relative;
-        margin: 0 auto;
+        left: 0;
+        float: left;
     }
 }
 
@@ -204,6 +206,7 @@ nav {
 
 .dropdown-menu a{
     color: #1C768F;
+    letter-spacing: .1rem;
 }
 .dropdown-menu li {
     margin-top: 1.7rem;
@@ -211,13 +214,13 @@ nav {
 .dropdown-menu .dropdown-item {
     font-size: 1.2rem;
 }
-.dropdown-menu .dropdown-item:hover {
+.dropdown-menu .dropdown-item:hover, .dropdown-menu .dropdown-item:focus {
     color: darkred;
     transition: .3s linear;
 }
 
 .dropdown-item img {
-    margin-right: .3rem;
+    margin-right: 1rem;
 }
 
 .nav-links .dropdown:hover .dropdown-menu {
@@ -226,6 +229,7 @@ nav {
     background-color: #FFDA73;
     border-radius: 1rem;
 }
+
 
 /*trash(корзина)------------------------------------------------>*/
 
@@ -237,7 +241,7 @@ nav {
     background: #EFEFBB;
     background: -webkit-linear-gradient(to right, #D4D3DD, #EFEFBB);
     background: linear-gradient(to right, #D4D3DD, #EFEFBB);
-    font-family: PokemonBold;
+    font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -248,7 +252,7 @@ nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 7rem auto;
+    margin: 7rem 11rem;
     max-width: 1250px;
 }
 
@@ -299,5 +303,20 @@ nav {
 
     .floating-btn {
         right: 10px;
+    }
+}
+
+.filter-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 9rem 30rem;
+}
+
+@media (max-width: 874px) {
+    .filter-menu {
+        margin: 9rem 2rem;
     }
 }
