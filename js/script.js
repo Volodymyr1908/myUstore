@@ -60,13 +60,16 @@ const getPokemon = async id => {
 };
 
 function createPokemonCard(pokemon) {
-    const pokemonEl = document.createElement('div');
-    pokemonEl.classList.add('pokemon');
-
     const poke_types = pokemon.types.map(type => type.type.name);
     const type = main_types.find(type => poke_types.indexOf(type) > -1);
     const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
     const color = colors[type];
+    const pokemonEl = document.createElement('div');
+
+    pokemonEl.classList.add('pokemon');
+    pokemonEl.classList.add(`${type}`);
+
+
 
     pokemonEl.style.backgroundColor = color;
 
@@ -81,6 +84,7 @@ function createPokemonCard(pokemon) {
         .toString()
         .padStart(3, '0')}</span>
             <h3 class="name">${name}</h3>
+            <h5 class="price">Price: 100$</h5>
             <small class="type">Type: <span>${type}</span></small>
         </div>
     `;
@@ -88,9 +92,27 @@ function createPokemonCard(pokemon) {
     pokemonEl.innerHTML = pokeInnerHTML;
 
     poke_container.appendChild(pokemonEl);
+
 }
 
+
+document.querySelector(".filter-menu").addEventListener("click", event => {
+    const filterBox = document.querySelectorAll(".pokemon");
+        if (event.target.tagName !== "A") return false;
+
+        let filterClass = event.target.dataset["f"];
+        filterBox.forEach( elem => {
+            elem.classList.remove("hide");
+            if (!elem.classList.contains(filterClass)) {
+                elem.classList.add("hide");
+            }
+        });
+    });
+
+
 fetchPokemons();
+
+
 
 
 

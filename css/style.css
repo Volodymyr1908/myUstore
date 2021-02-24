@@ -42,7 +42,7 @@ nav {
     justify-content: space-around;
     align-items: center;
     min-height: 8vh;
-    font-family: PokemonBold;
+    font-family: PokemonBold, sans-serif;
     background-color: #1C768F;
 }
 
@@ -75,10 +75,10 @@ nav {
     margin: 1rem 2rem;
 }
 
-.nav-links a {
+.nav-links li a {
     color: #FFDA73;
     text-decoration: none;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     letter-spacing: .2rem;
 }
 
@@ -208,10 +208,12 @@ nav {
     color: #1C768F;
     letter-spacing: .1rem;
 }
+
 .dropdown-menu li {
     margin-top: 1.7rem;
 }
 .dropdown-menu .dropdown-item {
+    color: #1C768F;
     font-size: 1.2rem;
 }
 .dropdown-menu .dropdown-item:hover, .dropdown-menu .dropdown-item:focus {
@@ -247,6 +249,7 @@ nav {
     align-items: center;
     justify-content: center;
     margin: 0;
+    min-height: calc(100vh - 15rem);
 }
 .poke-container {
     display: flex;
@@ -306,17 +309,119 @@ nav {
     }
 }
 
+/*ФІЛЬТРИ ---------------------------------------------->*/
+
 .filter-menu {
         display: flex;
         flex-direction: column;
         position: absolute;
+        width: 12.6rem;
+        padding-left: 1rem;
+        padding-right: .4rem;
         left: 0;
         top: 0;
-        margin: 9rem 30rem;
+        margin: 8rem 30rem;
+        background-color: #e9e8e4;
+        border-radius: .6rem;
 }
 
-@media (max-width: 874px) {
+.filter-list li {
+    list-style: none;
+    padding: .9rem 0;
+}
+.filter-item {
+    font-family: Poppins, serif;
+    text-decoration: none;
+    color: black;
+}
+.filter-item img {
+    position: relative;
+    top: .63rem;
+    margin: .2rem .2rem;
+}
+
+.hide {
+    display: none;
+}
+
+
+/*ФУТЕР ------------------------------------------->*/
+
+footer {
+    width: 100%;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    height: 15rem;
+    background-color: #1C768F;
+}
+
+
+/*МЕДІА ЗАПИТИ------------------------------------>*/
+
+@media screen and (max-width: 2450px) {
     .filter-menu {
-        margin: 9rem 2rem;
+        margin: 8rem 25rem;
+    }
+}
+@media screen and (max-width: 2290px) {
+    .filter-menu {
+        margin: 8rem 20rem;
+    }
+}
+
+@media screen and (max-width: 2130px) {
+    .filter-menu {
+        margin: 8rem 13rem;
+    }
+}
+@media screen and (max-width: 1900px) {
+    .filter-menu {
+        margin: 8rem 8rem;
+    }
+}
+@media screen and (max-width: 1740px) {
+    .filter-menu {
+        margin: 8rem 3rem;
+    }
+
+    .poke-container {
+        /*margin: 7rem 16rem;*/
+        margin-left: 16rem;
+    }
+}
+@media screen and (max-width: 1577px) {
+    .filter-menu {
+        margin: 8rem 2.4rem;
+    }
+    .poke-container {
+        margin: 7rem 17rem;
+    }
+}
+@media screen and (max-width: 1380px) {
+    .filter-menu {
+        margin: 8rem 1.8rem;
+    }
+    .poke-container {
+        /*margin: 7rem 16rem;*/
+        margin-left: 18rem;
+    }
+}
+@media screen and (max-width: 1170px) {
+    .filter-menu {
+        margin: 8rem 1.1rem;
+    }
+    .poke-container {
+        margin-left: 14.1rem;
+    }
+}
+
+@media screen and (max-width: 874px) {
+    .filter-menu {
+        display: none;
+    }
+
+    .poke-container {
+        margin: 7rem auto;
     }
 }
