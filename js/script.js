@@ -1,9 +1,13 @@
 
+function getRandomInt(max) {
+
+    return Math.floor(Math.random() * Math.floor(max));
+}
 const navSlide = () => {
+
     const burger = document.querySelector(".burger");
     const nav = document.querySelector(".nav-links");
     const navLinks = document.querySelectorAll(".nav-links li")
-
     burger.addEventListener("click", () => {
         //Toggle nav
         nav.classList.toggle("nav-active");
@@ -19,15 +23,45 @@ const navSlide = () => {
         //Burger Animation
         burger.classList.toggle("toggle");
     });
+
 }
-
-
-
 navSlide();
 
+function putToLocalStorage(key, value) {
+    window.localStorage.setItem(key, JSON.stringify(value));
+}
 
-const poke_container = document.getElementById('poke_container');
-const pokemons_number = 150;
+function getOrCreateFromLocalStorage(key) {
+    let item = window.localStorage.getItem(key);
+    if (!item) {
+        item = "{}";
+        window.localStorage.setItem(key, item);
+    }
+    return JSON.parse(item);
+}
+
+const pokeContainer = document.getElementById('poke_container');
+const pokeCart = document.getElementById('cart');
+
+const pokemonsNumber = 150;
+
+function initPrices() {
+    pokemonPrices = {};
+    for (let i = 1; i <= pokemonsNumber; i++) {
+        pokemonPrices[`${i}`] = getRandomInt(20000);
+    }
+    putToLocalStorage("prices", pokemonPrices);
+}
+
+function getPrice(id) {
+    return getOrCreateFromLocalStorage("prices")[`${id}`];
+}
+
+function getPrices() {
+    return getOrCreateFromLocalStorage("prices");
+}
+
+// initPrices();
 const colors = {
     fire: '#FDDFDF',
     grass: '#DEFDE0',
@@ -44,56 +78,170 @@ const colors = {
     fighting: '#E6E0D4',
     normal: '#F5F5F5'
 };
+
 const main_types = Object.keys(colors);
 
-const fetchPokemons = async () => {
-    for (let i = 1; i <= pokemons_number; i++) {
-        await getPokemon(i);
+const buildPokemonsDashboard = async () => {
+    for (let i = 1; i <= pokemonsNumber; i++) {
+        let pokemonJson = await getPokemon(i);
+        buildDashboardItem(pokemonJson);
     }
 };
 
-const getPokemon = async id => {
-    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-    const res = await fetch(url);
-    const pokemon = await res.json();
-    createPokemonCard(pokemon);
-};
 
-function createPokemonCard(pokemon) {
-    const poke_types = pokemon.types.map(type => type.type.name);
+const buildPokemonsCart = async () => {
+    let cart = getOrCreateFromLocalStorage("cart");
+    pokeCart.innerHTML = "";
+    for (const [pokemonId, count] of Object.entries(cart)) {
+        let pokemonJson = await getPokemon(pokemonId);
+        buildCartItem(pokemonJson);
+    }
+}
+
+function addToCart(pokemonId) {
+    let cart = getOrCreateFromLocalStorage("cart");
+    let pokemonsCount = cart.hasOwnProperty(pokemonId) ? cart[pokemonId] : 0;
+    cart[pokemonId] = pokemonsCount + 1;
+    putToLocalStorage("cart", cart);
+    buildPokemonsCart().then(r => {});
+}
+
+function removeFromCartOne(pokemonId) {
+    let cart = getOrCreateFromLocalStorage("cart");
+    if (cart.hasOwnProperty(pokemonId)) {
+        let pokemonsCount = cart[pokemonId];
+        let newPokemonsCount = pokemonsCount - 1;
+        if (newPokemonsCount < 1) {
+            delete cart[pokemonId];
+        } else {
+            cart[pokemonId] = newPokemonsCount;
+        }
+    }
+    putToLocalStorage("cart", cart);
+    buildPokemonsCart().then(r => {});
+}
+
+function removeFromCartAll(pokemonId) {
+    let cart = getOrCreateFromLocalStorage("cart");
+    delete cart[pokemonId];
+    putToLocalStorage("cart", cart);
+    buildPokemonsCart().then(r => {});
+}
+
+function showCart() {
+     buildPokemonsCart().then(r => pokeCart.style.display = "flex");
+}
+
+function hideCart() {
+    pokeCart.style.display = "none";
+}
+
+function buildCartItem(pokemonJson) {
+    const poke_types = pokemonJson.types.map(type => type.type.name);
     const type = main_types.find(type => poke_types.indexOf(type) > -1);
-    const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+    const name = pokemonJson.name[0].toUpperCase() + pokemonJson.name.slice(1);
     const color = colors[type];
     const pokemonEl = document.createElement('div');
 
     pokemonEl.classList.add('pokemon');
     pokemonEl.classList.add(`${type}`);
 
+    pokemonEl.style.backgroundColor = color;
 
+    let pokemonId = pokemonJson.id;
+    pokemonEl.innerHTML = getPokemonBaseView(pokemonId, name, getPrice(pokemonId), type);
+    let infoEl = pokemonEl.querySelector(".info");
+    let cart = getOrCreateFromLocalStorage("cart");
+    infoEl.appendChild(getPokemonsCountInCartView(cart[pokemonId]));
+    pokeCart.appendChild(pokemonEl);
+}
+
+function getPokemonsCountInCartView(count) {
+    let countEl = document.createElement("h5");
+    countEl.classList.add("price");
+    countEl.innerText = `Count: ${count}`
+    return countEl;
+}
+
+function buildDashboardItem(pokemonJson) {
+    const poke_types = pokemonJson.types.map(type => type.type.name);
+    const type = main_types.find(type => poke_types.indexOf(type) > -1);
+    const name = pokemonJson.name[0].toUpperCase() + pokemonJson.name.slice(1);
+    const color = colors[type];
+    const pokemonEl = document.createElement('div');
+
+    pokemonEl.classList.add('pokemon');
+    pokemonEl.classList.add(`${type}`);
 
     pokemonEl.style.backgroundColor = color;
 
-    const pokeInnerHTML = `
+    let pokemonId = pokemonJson.id;
+    pokemonEl.innerHTML = getPokemonBaseView(pokemonId, name, getPrice(pokemonId), type);
+    pokeContainer.appendChild(pokemonEl);
+}
+
+function getPokemonBaseView(pokemonId, name, price, type) {
+     return `
         <div class="img-container">
             <img src="https://pokeres.bastionbot.org/images/pokemon/${
-        pokemon.id
+        pokemonId
     }.png" alt="${name}" />
         </div>
         <div class="info">
-            <span class="number">#${pokemon.id
+            <span class="number">#${pokemonId
         .toString()
         .padStart(3, '0')}</span>
             <h3 class="name">${name}</h3>
-            <h5 class="price">Price: 100$</h5>
+            <h5 class="price">Price: ${price}$</h5>
             <small class="type">Type: <span>${type}</span></small>
         </div>
     `;
 
-    pokemonEl.innerHTML = pokeInnerHTML;
-
-    poke_container.appendChild(pokemonEl);
-
 }
+
+
+const getPokemon = async id => {
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    const res = await fetch(url);
+    return await res.json();
+};
+
+//
+// function getPokemonCard(pokemon) {
+//     const poke_types = pokemon.types.map(type => type.type.name);
+//     const type = main_types.find(type => poke_types.indexOf(type) > -1);
+//     const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+//     const color = colors[type];
+//     const pokemonEl = document.createElement('div');
+//
+//     pokemonEl.classList.add('pokemon');
+//     pokemonEl.classList.add(`${type}`);
+//
+//
+//
+//     pokemonEl.style.backgroundColor = color;
+//
+//     const pokeInnerHTML = `
+//         <div class="img-container">
+//             <img src="https://pokeres.bastionbot.org/images/pokemon/${
+//         pokemon.id
+//     }.png" alt="${name}" />
+//         </div>
+//         <div class="info">
+//             <span class="number">#${pokemon.id
+//         .toString()
+//         .padStart(3, '0')}</span>
+//             <h3 class="name">${name}</h3>
+//             <h5 class="price">Price: 100$</h5>
+//             <small class="type">Type: <span>${type}</span></small>
+//         </div>
+//     `;
+//
+//     pokemonEl.innerHTML = pokeInnerHTML;
+//
+//     poke_container.appendChild(pokemonEl);
+//
+// }
 
 
 document.querySelector(".filter-menu").addEventListener("click", event => {
@@ -110,8 +258,7 @@ document.querySelector(".filter-menu").addEventListener("click", event => {
     });
 
 
-fetchPokemons();
-
+buildPokemonsDashboard();
 
 
 

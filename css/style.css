@@ -357,6 +357,20 @@ footer {
 }
 
 
+.cart-container {
+    width: 80rem;
+    height: 40rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background: aquamarine;
+    left: 30vw;
+    top: 30vh;
+}
+
+
 /*МЕДІА ЗАПИТИ------------------------------------>*/
 
 @media screen and (max-width: 2450px) {
