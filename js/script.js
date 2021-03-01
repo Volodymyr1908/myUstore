@@ -195,8 +195,11 @@ function getPokemonBaseView(pokemonId, name, price, type) {
             <h5 class="price">Price: ${price}$</h5>
             <small class="type">Type: <span>${type}</span></small>
         </div>
+        <div class="plus-minus">
+            <img class="minus" src="https://www.flaticon.com/svg/vstatic/svg/1665/1665612.svg?token=exp=1614596390~hmac=b87374a96c122ee6608a434c5363273c" alt="pic">
+            <img class="add" src="https://www.flaticon.com/svg/vstatic/svg/1665/1665578.svg?token=exp=1614598515~hmac=896fc0bcedc6894e9398c69ac305f1ba" alt="pic">
+        </div>
     `;
-
 }
 
 
@@ -206,42 +209,6 @@ const getPokemon = async id => {
     return await res.json();
 };
 
-//
-// function getPokemonCard(pokemon) {
-//     const poke_types = pokemon.types.map(type => type.type.name);
-//     const type = main_types.find(type => poke_types.indexOf(type) > -1);
-//     const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
-//     const color = colors[type];
-//     const pokemonEl = document.createElement('div');
-//
-//     pokemonEl.classList.add('pokemon');
-//     pokemonEl.classList.add(`${type}`);
-//
-//
-//
-//     pokemonEl.style.backgroundColor = color;
-//
-//     const pokeInnerHTML = `
-//         <div class="img-container">
-//             <img src="https://pokeres.bastionbot.org/images/pokemon/${
-//         pokemon.id
-//     }.png" alt="${name}" />
-//         </div>
-//         <div class="info">
-//             <span class="number">#${pokemon.id
-//         .toString()
-//         .padStart(3, '0')}</span>
-//             <h3 class="name">${name}</h3>
-//             <h5 class="price">Price: 100$</h5>
-//             <small class="type">Type: <span>${type}</span></small>
-//         </div>
-//     `;
-//
-//     pokemonEl.innerHTML = pokeInnerHTML;
-//
-//     poke_container.appendChild(pokemonEl);
-//
-// }
 
 
 document.querySelector(".filter-menu").addEventListener("click", event => {
@@ -261,5 +228,11 @@ document.querySelector(".filter-menu").addEventListener("click", event => {
 buildPokemonsDashboard();
 
 
+const addItemToCard = document.querySelector(".add");
+const removeItemToCard = document.querySelector(".minus");
 
 
+// addItemToCard.addEventListener("click", addToCart());
+// removeItemToCard.addEventListener("click", removeFromCartOne);
+
+const closeCartButton = document.querySelector(".hide-cart").addEventListener("click", hideCart);

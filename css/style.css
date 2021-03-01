@@ -356,20 +356,49 @@ footer {
     background-color: #1C768F;
 }
 
+/*КОРЗИНА -------------------------->*/
 
-.cart-container {
-    width: 80rem;
-    height: 40rem;
+.cart-wrapper {
+    position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    position: absolute;
-    background: aquamarine;
+    justify-content: center;
+    background-color: #FFDA43;
     left: 30vw;
-    top: 30vh;
+    top: 15vh;
 }
 
+.cart-container {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    /*position: relative;*/
+    max-width: 60rem;
+}
+
+.plus-minus {
+    display: flex;
+    justify-content: space-around;
+    margin-top: .3rem;
+}
+.add {
+    width: 1.4rem;
+    height: 1.4rem;
+    cursor: pointer;
+}
+
+.minus {
+    width: 1.4rem;
+    height: 1.4rem;
+    cursor: pointer;
+}
+
+.hide-cart {
+    width: 1.6rem;
+    height: 1.6rem;
+    cursor: pointer;
+}
 
 /*МЕДІА ЗАПИТИ------------------------------------>*/
 
