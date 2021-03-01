@@ -1,8 +1,8 @@
-
 function getRandomInt(max) {
 
     return Math.floor(Math.random() * Math.floor(max));
 }
+
 const navSlide = () => {
 
     const burger = document.querySelector(".burger");
@@ -44,6 +44,7 @@ const pokeContainer = document.getElementById('poke_container');
 const pokeCart = document.getElementById('cart');
 
 const pokemonsNumber = 150;
+const pageSize = 10;
 
 function initPrices() {
     pokemonPrices = {};
@@ -81,13 +82,13 @@ const colors = {
 
 const main_types = Object.keys(colors);
 
-const buildPokemonsDashboard = async () => {
-    for (let i = 1; i <= pokemonsNumber; i++) {
+const buildPokemonsDashboard = async (startIndex) => {
+    pokeContainer.innerHTML = "";
+    for (let i = startIndex + 1; i <= startIndex + pageSize; i++) {
         let pokemonJson = await getPokemon(i);
         buildDashboardItem(pokemonJson);
     }
 };
-
 
 const buildPokemonsCart = async () => {
     let cart = getOrCreateFromLocalStorage("cart");
@@ -98,12 +99,33 @@ const buildPokemonsCart = async () => {
     }
 }
 
+function removeFromCartOneWrapper(e) {
+    let pokemonId = getPokemonIdFromButton(e);
+    removeFromCartOne(pokemonId);
+}
+
+function addToCartWrapper(e) {
+    // console.log(e);
+    let pokemonId = getPokemonIdFromButton(e)
+    // console.log(pokemonId);
+    addToCart(pokemonId);
+}
+
+function getPokemonIdFromButton(e) {
+    return e.target
+        .parentNode
+        .parentNode
+        .querySelector(".number")
+        .getAttribute("pokemonId");
+}
+
 function addToCart(pokemonId) {
     let cart = getOrCreateFromLocalStorage("cart");
     let pokemonsCount = cart.hasOwnProperty(pokemonId) ? cart[pokemonId] : 0;
     cart[pokemonId] = pokemonsCount + 1;
     putToLocalStorage("cart", cart);
-    buildPokemonsCart().then(r => {});
+    buildPokemonsCart().then(r => {
+    });
 }
 
 function removeFromCartOne(pokemonId) {
@@ -118,18 +140,20 @@ function removeFromCartOne(pokemonId) {
         }
     }
     putToLocalStorage("cart", cart);
-    buildPokemonsCart().then(r => {});
+    buildPokemonsCart().then(r => {
+    });
 }
 
 function removeFromCartAll(pokemonId) {
     let cart = getOrCreateFromLocalStorage("cart");
     delete cart[pokemonId];
     putToLocalStorage("cart", cart);
-    buildPokemonsCart().then(r => {});
+    buildPokemonsCart().then(r => {
+    });
 }
 
 function showCart() {
-     buildPokemonsCart().then(r => pokeCart.style.display = "flex");
+    buildPokemonsCart().then(r => pokeCart.style.display = "flex");
 }
 
 function hideCart() {
@@ -152,15 +176,28 @@ function buildCartItem(pokemonJson) {
     pokemonEl.innerHTML = getPokemonBaseView(pokemonId, name, getPrice(pokemonId), type);
     let infoEl = pokemonEl.querySelector(".info");
     let cart = getOrCreateFromLocalStorage("cart");
-    infoEl.appendChild(getPokemonsCountInCartView(cart[pokemonId]));
+    infoEl.appendChild(getPokemonsCountView(cart[pokemonId]));
+    pokemonEl.appendChild(getPokemonsPlusMinusButtons());
     pokeCart.appendChild(pokemonEl);
 }
 
-function getPokemonsCountInCartView(count) {
+function getPokemonsCountView(count) {
     let countEl = document.createElement("h5");
     countEl.classList.add("price");
     countEl.innerText = `Count: ${count}`
     return countEl;
+}
+
+function getPokemonsPlusMinusButtons() {
+    let plusMinus = document.createElement('div');
+    plusMinus.innerHTML = `
+        <img class="minus" src="https://www.flaticon.com/svg/vstatic/svg/814/814039.svg?token=exp=1614624717~hmac=18d65c99f5dde3d37b68cad560670bb7" alt="pic">
+        <img class="add" src="https://www.flaticon.com/svg/vstatic/svg/149/149145.svg?token=exp=1614624779~hmac=11e789819d64bca991d4be4d939c7d1f" alt="pic">
+    `
+    plusMinus.classList.add("plus-minus");
+    plusMinus.querySelector(".minus").addEventListener("click", removeFromCartOneWrapper);
+    plusMinus.querySelector(".add").addEventListener("click", addToCartWrapper);
+    return plusMinus;
 }
 
 function buildDashboardItem(pokemonJson) {
@@ -177,27 +214,35 @@ function buildDashboardItem(pokemonJson) {
 
     let pokemonId = pokemonJson.id;
     pokemonEl.innerHTML = getPokemonBaseView(pokemonId, name, getPrice(pokemonId), type);
+    pokemonEl.appendChild(getBuyButton());
     pokeContainer.appendChild(pokemonEl);
 }
 
+function getBuyButton() {
+    let div = document.createElement("div");
+    let button = document.createElement("button");
+    button.classList.add("buy-now");
+    button.innerText = "Buy";
+    button.addEventListener("click", addToCartWrapper);
+    div.appendChild(button);
+    return div;
+}
+
+// Все що тут - відображається і в корзині, і на дашборді
 function getPokemonBaseView(pokemonId, name, price, type) {
-     return `
+    return `
         <div class="img-container">
             <img src="https://pokeres.bastionbot.org/images/pokemon/${
         pokemonId
     }.png" alt="${name}" />
         </div>
         <div class="info">
-            <span class="number">#${pokemonId
+            <span pokemonId="${pokemonId}" class="number">#${pokemonId
         .toString()
         .padStart(3, '0')}</span>
             <h3 class="name">${name}</h3>
             <h5 class="price">Price: ${price}$</h5>
             <small class="type">Type: <span>${type}</span></small>
-        </div>
-        <div class="plus-minus">
-            <img class="minus" src="https://www.flaticon.com/svg/vstatic/svg/1665/1665612.svg?token=exp=1614596390~hmac=b87374a96c122ee6608a434c5363273c" alt="pic">
-            <img class="add" src="https://www.flaticon.com/svg/vstatic/svg/1665/1665578.svg?token=exp=1614598515~hmac=896fc0bcedc6894e9398c69ac305f1ba" alt="pic">
         </div>
     `;
 }
@@ -209,30 +254,48 @@ const getPokemon = async id => {
     return await res.json();
 };
 
-
-
 document.querySelector(".filter-menu").addEventListener("click", event => {
     const filterBox = document.querySelectorAll(".pokemon");
-        if (event.target.tagName !== "A") return false;
+    if (event.target.tagName !== "A") return false;
 
-        let filterClass = event.target.dataset["f"];
-        filterBox.forEach( elem => {
-            elem.classList.remove("hide");
-            if (!elem.classList.contains(filterClass)) {
-                elem.classList.add("hide");
-            }
-        });
+    let filterClass = event.target.dataset["f"];
+    filterBox.forEach(elem => {
+        elem.classList.remove("hide");
+        if (!elem.classList.contains(filterClass)) {
+            elem.classList.add("hide");
+        }
     });
+});
 
 
-buildPokemonsDashboard();
+function initPagination() {
+    let paginationEl = document.querySelector(".pagination");
+    let pagesCount = pokemonsNumber / pageSize;
+    for (let i = 0; i < pagesCount; i++) {
+        let startPokemonIndex = i * pageSize;
+        let buttonText = i + 1;
+        let buttonEl = document.createElement("button");
+        buttonEl.classList.add("first");
+        buttonEl.addEventListener("click", () => {
+            buildPokemonsDashboard(startPokemonIndex)
+        });
+        buttonEl.innerText = buttonText;
+        paginationEl.appendChild(buttonEl);
+    }
+}
 
+initPagination();
 
-const addItemToCard = document.querySelector(".add");
-const removeItemToCard = document.querySelector(".minus");
+buildPokemonsDashboard(0);
 
+function initListeners() {
+    // const addButtons = document.querySelectorAll(".add");
+    // const removeButtons = document.querySelectorAll(".minus");
+    //
+    // addButtons.forEach(addButton =>
+    //     addButton.addEventListener("click", addToCartWrapper));
+    // removeButtons.forEach(removeButton =>
+    //     removeButton.addEventListener("click", removeFromCartOneWrapper));
 
-// addItemToCard.addEventListener("click", addToCart());
-// removeItemToCard.addEventListener("click", removeFromCartOne);
-
-const closeCartButton = document.querySelector(".hide-cart").addEventListener("click", hideCart);
+    const closeCartButton = document.querySelector(".hide-cart").addEventListener("click", hideCart);
+}
