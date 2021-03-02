@@ -62,6 +62,10 @@ function getPrices() {
     return getOrCreateFromLocalStorage("prices");
 }
 
+function getCart() {
+    return getOrCreateFromLocalStorage("cart");
+}
+
 // initPrices();
 const colors = {
     fire: '#FDDFDF',
@@ -97,7 +101,30 @@ const buildPokemonsCart = async () => {
         let pokemonJson = await getPokemon(pokemonId);
         buildCartItem(pokemonJson);
     }
+    let totalCurrent = document.createElement("div");
+    let currentValue = getTotalCurrent();
+    totalCurrent.classList.add("total-current-container")
+    totalCurrent.innerHTML = `<span class="total-curent">Total current:</span>
+                              <span class="count-total-current">${currentValue}</span>`
+    pokeCart.appendChild(totalCurrent);
+    
 }
+
+function getTotalCurrent () {
+    let cart = getCart();
+    let prices = getPrices();
+    let keys = Object.keys(cart);
+    let totalCurrent = 0;
+    keys.forEach(function(key) {
+    let count = cart[key];
+    let price = prices[key];
+    let a = count * price;
+    totalCurrent += a;
+});
+    return totalCurrent
+} 
+
+
 
 function removeFromCartOneWrapper(e) {
     let pokemonId = getPokemonIdFromButton(e);
