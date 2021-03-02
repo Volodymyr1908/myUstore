@@ -44,7 +44,7 @@ const pokeContainer = document.getElementById('poke_container');
 const pokeCart = document.getElementById('cart');
 
 const pokemonsNumber = 150;
-const pageSize = 10;
+const pageSize = 12;
 
 function initPrices() {
     pokemonPrices = {};
@@ -221,6 +221,7 @@ function buildDashboardItem(pokemonJson) {
 function getBuyButton() {
     let div = document.createElement("div");
     let button = document.createElement("button");
+    div.classList.add("buy-now-container");
     button.classList.add("buy-now");
     button.innerText = "Buy";
     button.addEventListener("click", addToCartWrapper);
@@ -297,5 +298,23 @@ function initListeners() {
     // removeButtons.forEach(removeButton =>
     //     removeButton.addEventListener("click", removeFromCartOneWrapper));
 
-    const closeCartButton = document.querySelector(".hide-cart").addEventListener("click", hideCart);
 }
+
+document.querySelector(".show-cart").addEventListener("click", () => {
+    let closeButtons = document.querySelector(".close");
+    let container = document.querySelector(".container");
+    let footer = document.querySelector("footer");
+
+    container.style.opacity = "0.6";
+    footer.style.opacity = "0.6";
+    closeButtons.classList.add("hide-cart");
+    document.querySelector(".hide-cart").addEventListener("click", () => {
+        closeButtons.classList.remove("hide-cart");
+        container.style.opacity = "1";
+        footer.style.opacity = "1";
+        hideCart();
+    });
+    showCart();
+});
+
+

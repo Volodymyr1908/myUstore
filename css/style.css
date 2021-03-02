@@ -48,10 +48,11 @@ nav {
 
 .logo {
     text-transform: uppercase;
-    font-size: 1.3rem;
+    font-size: 2.1rem;
     display: flex;
     align-items: center;
     text-align: center;
+
 }
 
 .logo img {
@@ -122,6 +123,9 @@ nav {
     }
     .nav-links a {
         letter-spacing: 0;
+    }
+    .logo {
+        font-size: 1.6rem;
     }
 }
 @media screen and (max-width: 1024px) {
@@ -297,6 +301,22 @@ nav {
     letter-spacing: 1px;
 }
 
+.buy-now {
+    width: 3.8rem;
+    height: 1.6rem;
+    border-radius: .7rem;
+    background-color: #ffffff;
+    border: .1rem solid black;
+    text-transform: uppercase;
+    font-family: Poppins, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.buy-now:hover {
+    transition: .5s ease-in;
+    transform: scale(1.1, 1.1);
+}
 
 @media screen and (max-width: 480px) {
 
@@ -320,7 +340,7 @@ nav {
         padding-right: .4rem;
         left: 0;
         top: 0;
-        margin: 8rem 30rem;
+        margin: 12rem 30rem;
         background-color: #e9e8e4;
         border-radius: .6rem;
 }
@@ -367,6 +387,7 @@ footer {
     background-color: #FFDA43;
     left: 30vw;
     top: 15vh;
+    border-radius: 1rem;
 }
 
 .cart-container {
@@ -395,9 +416,14 @@ footer {
 }
 
 .hide-cart {
+    display: block;
     width: 1.6rem;
     height: 1.6rem;
     cursor: pointer;
+    margin-top: .3rem;
+    margin-left: auto;
+    padding: .2rem;
+    margin-right: .5rem;
 }
 /*pagination---------------------------------->*/
 
@@ -405,16 +431,26 @@ footer {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding: .3rem 1.6rem;
+    padding: .3rem 3.6rem;
     /*margin: 2rem auto;*/
 }
 
 .first {
-    width: 1.2rem;
-    border-radius: .3rem;
-
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    margin: .2rem .3rem;
+    color: white;
+    background-color: #1C768F;
+    border: .1rem solid white;
+    transition: 1s;
 }
 
+.first:hover, .first:focus {
+    background-color: #1C768F;
+    border: .1rem solid #FFDA73;
+    color: #FFDA43;
+}
 
 /*МЕДІА ЗАПИТИ------------------------------------>*/
 
