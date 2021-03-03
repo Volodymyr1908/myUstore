@@ -104,7 +104,7 @@ const buildPokemonsCart = async () => {
     let totalCurrent = document.createElement("div");
     let currentValue = getTotalCurrent();
     totalCurrent.classList.add("total-current-container")
-    totalCurrent.innerHTML = `<span class="total-curent">Total current:</span>
+    totalCurrent.innerHTML = `<span class="total-current">Total current:</span>
                               <span class="count-total-current">${currentValue}</span>`
     pokeCart.appendChild(totalCurrent);
     
@@ -218,8 +218,8 @@ function getPokemonsCountView(count) {
 function getPokemonsPlusMinusButtons() {
     let plusMinus = document.createElement('div');
     plusMinus.innerHTML = `
-        <img class="minus" src="https://www.flaticon.com/svg/vstatic/svg/814/814039.svg?token=exp=1614624717~hmac=18d65c99f5dde3d37b68cad560670bb7" alt="pic">
-        <img class="add" src="https://www.flaticon.com/svg/vstatic/svg/149/149145.svg?token=exp=1614624779~hmac=11e789819d64bca991d4be4d939c7d1f" alt="pic">
+        <img class="minus" src="./assets/icons/minus.svg" alt="pic">
+        <img class="add" src="./assets/icons/plus.svg" alt="pic">
     `
     plusMinus.classList.add("plus-minus");
     plusMinus.querySelector(".minus").addEventListener("click", removeFromCartOneWrapper);
